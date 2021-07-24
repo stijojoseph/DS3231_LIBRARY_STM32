@@ -111,17 +111,19 @@ int month=7;
 int year=21;
 
 date_write(day,date,month,year);
-
-
+//min=16;
+sec=23;
 read_time();
 read_date();
+alarm_write(hr,min,sec,HR_FORMAT_12_PM,day,date,ALARM_H_M_S);
 
-
-
+uint8_t MemAddress=CONTROL_STATUS;
+uint8_t Devaddress=Dev<<1;
 
 
 while (1)
 {
+
 
 
 

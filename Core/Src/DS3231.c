@@ -221,16 +221,8 @@ void alarm_write(int hr,int min,int sec,int format,int day,int date,int mode)
 	uint8_t	 pata[5];
 	uint16_t Devaddress=(Dev<<1);
 
-	MemAddress=CONTROL;
-	  uint8_t data;
-	  HAL_I2C_Mem_Read(&hi2c1, Devaddress,MemAddress,1,&data,1,1000);
-	 data &=0x00;
-	//HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
-	 data &=0x05;
-	HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
 
 
-	MemAddress=ALARM;
 
 	//pata[2]=integer_to_bcd(hr);
 	pata[0]=integer_to_bcd(sec);
@@ -287,10 +279,27 @@ default:
 
 	}
 
+	MemAddress=ALARM;
+
+		HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &pata,4,1000);
+
+	MemAddress=CONTROL;
+	  uint8_t data;
+	  HAL_I2C_Mem_Read(&hi2c1, Devaddress,MemAddress,1,&data,1,1000);
+
+	//HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
+	 data |=0x05;
+	HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
 
 
+	 MemAddress=CONTROL_STATUS;
 
-	HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &pata,4,1000);
+	HAL_I2C_Mem_Read(&hi2c1, Devaddress,MemAddress,1,&data,1,1000);
+
+			//HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
+
+		 data &=~(1<<0);
+			HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
 
 
 }
