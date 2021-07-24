@@ -1,0 +1,5 @@
+conversions.c:9:5:char_to_int	24	static
+conversions.c:25:7:int_to_char	152	static
+conversions.c:64:5:string_to_hex	40	static
+conversions.c:93:5:integer_to_bcd	24	static
+conversions.c:105:5:bcd_to_integer	24	static

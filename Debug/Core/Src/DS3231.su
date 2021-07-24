@@ -1,0 +1,6 @@
+DS3231.c:34:6:time_write	48	static
+DS3231.c:84:6:date_write	48	static
+DS3231.c:113:6:read_time	48	static
+DS3231.c:160:6:read_date	48	static
+DS3231.c:217:6:alarm_write	56	static
+DS3231.c:300:6:print	16	static
