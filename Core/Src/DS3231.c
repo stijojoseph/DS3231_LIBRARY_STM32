@@ -288,7 +288,7 @@ default:
 	  HAL_I2C_Mem_Read(&hi2c1, Devaddress,MemAddress,1,&data,1,1000);
 
 	//HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
-	 data |=0x05;
+	 data |=CONTROL_INTCN | ALARM_A11E;
 	HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
 
 
@@ -298,11 +298,108 @@ default:
 
 			//HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
 
-		 data &=~(1<<0);
+		 data &=~ALARM_A1F;
 			HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
 
 
 }
+
+
+void alarm_write2(int hr,int min,int format,int day,int date,int mode)
+{
+
+	uint8_t MemAddress=ALARM2;
+	uint8_t	 pata[5];
+	uint16_t Devaddress=(Dev<<1);
+
+
+
+
+	//pata[2]=integer_to_bcd(hr);
+	//pata[0]=integer_to_bcd(sec);
+	pata[0]=integer_to_bcd(min);
+	pata[2]=integer_to_bcd(date);
+
+	if(format==HR_FORMAT_24)
+	pata[1]=integer_to_bcd(hr);
+	else
+	{
+	pata[1]=integer_to_bcd(hr)|(1<<6);
+	if(format==HR_FORMAT_12_PM)
+		pata[1]=integer_to_bcd(hr)|(1<<6)|(1<<5);
+	else if(format==HR_FORMAT_12_AM)
+		pata[1]=integer_to_bcd(hr)|(1<<6);
+	}
+
+	switch(mode)
+	{
+	case ALARM_DY_H_M:
+	{
+		pata[2]|=(1<<6);
+	break;
+	}
+	case ALARM_DT_H_M:
+	{
+
+		break;
+	}
+	case ALARM_H_M:
+	{
+		pata[2]|=(1<<7);
+
+		break;
+	}
+	case ALARM_M:
+	{   pata[1]|=(1<<7);
+		pata[2]|=(1<<7);
+
+		break;
+	}
+	case ALARM_ONCE_PER_MIN:
+	{
+		pata[0]|=(1<<7);
+		pata[1]|=(1<<7);
+		pata[2]|=(1<<7);
+
+		break;
+	}
+
+default:
+	break;
+
+
+	}
+
+	MemAddress=ALARM2;
+
+		HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &pata,3,1000);
+
+	MemAddress=CONTROL;
+	  uint8_t data;
+	  HAL_I2C_Mem_Read(&hi2c1, Devaddress,MemAddress,1,&data,1,1000);
+
+	//HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
+	  data |=CONTROL_INTCN | ALARM_A21E;
+	HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
+
+
+	 MemAddress=CONTROL_STATUS;
+
+	HAL_I2C_Mem_Read(&hi2c1, Devaddress,MemAddress,1,&data,1,1000);
+
+			//HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
+
+		 data &=~ALARM_A2F;
+			HAL_I2C_Mem_Write(&hi2c1, Devaddress, MemAddress, 1, &data,1,1000);
+
+
+}
+
+
+
+
+
+
 
 
 //A10-RX A09-TX

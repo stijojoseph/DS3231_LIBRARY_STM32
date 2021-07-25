@@ -100,7 +100,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 int i=15;
 
-uint8_t hr=15;
+uint8_t hr=10;
 uint8_t min=15;
 uint8_t sec=19;
 
@@ -115,7 +115,7 @@ date_write(day,date,month,year);
 sec=23;
 read_time();
 read_date();
-alarm_write(hr,min,sec,HR_FORMAT_12_PM,day,date,ALARM_H_M_S);
+alarm_write2(hr,min,HR_FORMAT_12_PM,day,date,ALARM_ONCE_PER_MIN);
 
 uint8_t MemAddress=CONTROL_STATUS;
 uint8_t Devaddress=Dev<<1;
