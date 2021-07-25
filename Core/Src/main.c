@@ -115,6 +115,8 @@ date_write(day,date,month,year);
 sec=23;
 read_time();
 read_date();
+
+alarm_write(hr,min,sec,HR_FORMAT_12_PM,day,date,ALARM_ONCE_PER_SECOND);
 alarm_write2(hr,min,HR_FORMAT_12_PM,day,date,ALARM_ONCE_PER_MIN);
 
 uint8_t MemAddress=CONTROL_STATUS;
